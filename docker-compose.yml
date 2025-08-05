@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres_sis_doc
+    environment:
+      POSTGRES_DB: sisdoc_db
+      POSTGRES_USER: sisdoc_user
+      POSTGRES_PASSWORD: sisdoc
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+  
