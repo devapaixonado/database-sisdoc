@@ -1,73 +1,120 @@
--- Passo 1
-CREATE SCHEMA sisdoc;
+-- ===============================
+-- Criar schema
+-- ===============================
+CREATE SCHEMA IF NOT EXISTS sisdoc;
 
--- Passo 2
-CREATE TABLE sisdoc.usuario (
+-- ===============================
+-- Tabela: Usuario
+-- ===============================
+CREATE TABLE IF NOT EXISTS sisdoc.usuario (
     id_usuario SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     senha CHAR(60),
     dt_inicio_vigencia TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    dt_fim_vigencia TIMESTAMP
+    dt_fim_vigencia TIMESTAMP,
+    dt_ultima_atualizacao TIMESTAMP
 );
 
--- Passo 3
-CREATE TABLE sisdoc.secao (
-    id_secao SERIAL PRIMARY KEY,
-    descricao VARCHAR(40) UNIQUE NOT NULL,
+-- ===============================
+-- Tabela: Pasta
+-- ===============================
+CREATE TABLE IF NOT EXISTS sisdoc.pasta (
+    id_pasta SERIAL PRIMARY KEY,
+    id_usuario_ultima_atualizacao INTEGER,
+    nome VARCHAR(60) UNIQUE NOT NULL,
+    descricao VARCHAR(255),
     dt_inicio_vigencia TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     dt_fim_vigencia TIMESTAMP,
-    id_usuario INTEGER NOT NULL,
-    FOREIGN KEY (id_usuario) REFERENCES sisdoc.usuario(id_usuario) ON DELETE SET NULL
+    dt_ultima_atualizacao TIMESTAMP,
+    CONSTRAINT fk_pasta_usuario FOREIGN KEY (id_usuario_ultima_atualizacao) 
+        REFERENCES sisdoc.usuario(id_usuario) ON DELETE SET NULL
 );
 
-CREATE INDEX idx_secao_usuario ON sisdoc.secao(id_usuario);
+CREATE INDEX IF NOT EXISTS idx_pasta_usuario 
+    ON sisdoc.pasta(id_usuario_ultima_atualizacao);
 
--- Passo 4
-CREATE TABLE sisdoc.topico (
-    id_topico SERIAL PRIMARY KEY,
-    id_secao INTEGER NOT NULL,
-    descricao VARCHAR(40) NOT NULL,
-    id_usuario INTEGER NOT NULL,
-    dt_inicio_vigencia TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    dt_fim_vigencia TIMESTAMP,
-    FOREIGN KEY (id_secao) REFERENCES sisdoc.secao(id_secao) ON DELETE CASCADE,
-    FOREIGN KEY (id_usuario) REFERENCES sisdoc.usuario(id_usuario) ON DELETE SET NULL
-);
-
-CREATE INDEX idx_topico_secao ON sisdoc.topico(id_secao);
-CREATE INDEX idx_topico_usuario ON sisdoc.topico(id_usuario);
-
--- Passo 5
-CREATE TABLE sisdoc.documento (
+-- ===============================
+-- Tabela: Documento
+-- ===============================
+CREATE TABLE IF NOT EXISTS sisdoc.documento (
     id_documento SERIAL PRIMARY KEY,
-    id_topico INTEGER NOT NULL,
-    id_usuario INTEGER NOT NULL,
-    nome_arquivo VARCHAR(255) NOT NULL,
-    descricao TEXT,
-    tipo_arquivo VARCHAR(50),
-    caminho_arquivo TEXT,
+    id_pasta INTEGER NOT NULL,
+    id_usuario_ultima_atualizacao INTEGER,
+    nome VARCHAR(100) NOT NULL,
+    descricao VARCHAR(255),
     dt_inicio_vigencia TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     dt_fim_vigencia TIMESTAMP,
-    FOREIGN KEY (id_topico) REFERENCES sisdoc.topico(id_topico) ON DELETE CASCADE,
-    FOREIGN KEY (id_usuario) REFERENCES sisdoc.usuario(id_usuario) ON DELETE SET NULL
+    dt_ultima_atualizacao TIMESTAMP,
+    CONSTRAINT fk_documento_pasta FOREIGN KEY (id_pasta) 
+        REFERENCES sisdoc.pasta(id_pasta) ON DELETE CASCADE,
+    CONSTRAINT fk_documento_usuario FOREIGN KEY (id_usuario_ultima_atualizacao) 
+        REFERENCES sisdoc.usuario(id_usuario) ON DELETE SET NULL
 );
 
-CREATE INDEX idx_documento_topico ON sisdoc.documento(id_topico);
-CREATE INDEX idx_documento_usuario ON sisdoc.documento(id_usuario);
+CREATE INDEX IF NOT EXISTS idx_documento_pasta 
+    ON sisdoc.documento(id_pasta);
 
--- Passo 6
-INSERT INTO sisdoc.usuario (nome, email) VALUES ('Admin', 'gabriel.raraujo@saude.gov.br');
-INSERT INTO sisdoc.usuario (nome, email) VALUES ('Filipi Pedro Santos de Jesus', 'filipi.jesus@saude.gov.br');
+CREATE INDEX IF NOT EXISTS idx_documento_usuario 
+    ON sisdoc.documento(id_usuario_ultima_atualizacao);
 
--- Passo 7
-INSERT INTO sisdoc.secao (descricao, id_usuario) VALUES ('Documentos', 1);
-INSERT INTO sisdoc.secao (descricao, id_usuario) VALUES ('Seção Teste', 1);
+-- ===============================
+-- Função: Atualizar dt_ultima_atualizacao
+-- ===============================
+CREATE OR REPLACE FUNCTION sisdoc.set_dt_ultima_atualizacao()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.dt_ultima_atualizacao = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
--- Passo 8
-INSERT INTO sisdoc.topico (id_secao, id_usuario, descricao) values (1, 1, 'Banco do Brasil');
-INSERT INTO sisdoc.topico (id_secao, id_usuario, descricao) values (1, 1, 'Caixa Econômica Federal');
+-- ===============================
+-- Triggers (antes dos inserts)
+-- ===============================
+DROP TRIGGER IF EXISTS trg_set_pasta_dt_ultima_atualizacao ON sisdoc.pasta;
+DROP TRIGGER IF EXISTS trg_set_usuario_dt_ultima_atualizacao ON sisdoc.usuario;
+DROP TRIGGER IF EXISTS trg_set_documento_dt_ultima_atualizacao ON sisdoc.documento;
 
--- Passo 9
-INSERT INTO sisdoc.documento (id_topico, id_usuario, nome_arquivo, tipo_arquivo, caminho_arquivo)
-VALUES (1, 1, 'Manual de procedimentos para alteração do MFA VPN do Ministério da Saúde.pdf', 'pdf', 'C:\Users\gabriel.raraujo\Documentos');
+CREATE TRIGGER trg_set_pasta_dt_ultima_atualizacao
+BEFORE INSERT OR UPDATE ON sisdoc.pasta
+FOR EACH ROW
+EXECUTE FUNCTION sisdoc.set_dt_ultima_atualizacao();
+
+CREATE TRIGGER trg_set_usuario_dt_ultima_atualizacao
+BEFORE INSERT OR UPDATE ON sisdoc.usuario
+FOR EACH ROW
+EXECUTE FUNCTION sisdoc.set_dt_ultima_atualizacao();
+
+CREATE TRIGGER trg_set_documento_dt_ultima_atualizacao
+BEFORE INSERT OR UPDATE ON sisdoc.documento
+FOR EACH ROW
+EXECUTE FUNCTION sisdoc.set_dt_ultima_atualizacao();
+
+-- ===============================
+-- Inserts iniciais: Usuario
+-- ===============================
+INSERT INTO sisdoc.usuario (nome, email) VALUES
+('Admin', 'gabriel.raraujo@saude.gov.br'),
+('Filipi Pedro Santos de Jesus', 'filipi.jesus@saude.gov.br');
+
+-- ===============================
+-- Inserts iniciais: Pasta
+-- ===============================
+INSERT INTO sisdoc.pasta (id_usuario_ultima_atualizacao, nome, descricao) VALUES
+(1, 'Banco do Brasil', 'Documentos referentes a assuntos relacionados ao Banco do Brasil e suas contas bancárias de Saúde.'),
+(1, 'Caixa Econômica Federal', 'Mundo Caixa Econômica'),
+(1, 'CGAFI', 'Documentos CGAFI'),
+(1, 'SALDO BANCÁRIO', 'Documentos sobre saldos bancários'),
+(1, 'QLIK', 'Documentos QLIK');
+
+-- ===============================
+-- Inserts iniciais: Documento
+-- ===============================
+INSERT INTO sisdoc.documento (id_pasta, id_usuario_ultima_atualizacao, nome, descricao) VALUES
+(1, 1, 'Documento 1 - BB', 'Documento teste para aplicação SISDOC'),
+(1, 1, 'Documento 2 - BB', 'Documento teste para aplicação SISDOC'),
+(1, 1, 'Documento 3 - BB', 'Documento teste para aplicação SISDOC'),
+(2, 1, 'Documento 1 - CEF', 'Documento teste para aplicação SISDOC'),
+(2, 1, 'Documento 2 - CEF', 'Documento teste para aplicação SISDOC'),
+(2, 1, 'Documento 3 - CEF', 'Documento teste para aplicação SISDOC');
