@@ -1,0 +1,379 @@
+{
+	"info": {
+		"_postman_id": "170e272b-137d-42d5-a74a-0902fade4f22",
+		"name": "API SISDOC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45223404",
+		"_collection_link": "https://gambeta-3420128.postman.co/workspace/Gambeta's-Workspace~35c2b0d2-26e7-48c6-8f95-5e6e07f0ee73/collection/45223404-170e272b-137d-42d5-a74a-0902fade4f22?action=share&source=collection_link&creator=45223404"
+	},
+	"item": [
+		{
+			"name": "usuarios",
+			"item": [
+				{
+					"name": "Get All Usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_sisdoc}}/usuarios",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Usuarios By Filters",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"saude\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_sisdoc}}/usuarios",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Usuario By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_sisdoc}}/usuarios/5",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"usuarios",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"User criado via API\",\r\n  \"email\": \"user_api@gmail.com\"  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_sisdoc}}/usuarios/create",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"usuarios",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Usuario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Admin Update\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_sisdoc}}/usuarios/35",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"usuarios",
+								"35"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "pastas",
+			"item": [
+				{
+					"name": "Get All Pastas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_sisdoc}}/pastas",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"pastas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Pastas By Filters",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"al\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_sisdoc}}/pastas",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"pastas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pasta By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_sisdoc}}/pastas/1",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"pastas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Pastas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id_usuario\": 1,\r\n  \"id_secao\": 2,\r\n  \"descricao\": \"INVESTSUS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_sisdoc}}/pastas/create",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"pastas",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Pasta",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"Tópico atualizado via API\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_sisdoc}}/pastas/3",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"pastas",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "documentos",
+			"item": [
+				{
+					"name": "Get All Documentos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_sisdoc}}/documentos",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"documentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Documentos By Filters",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome_arquivo\": \"Ma\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_sisdoc}}/documentos",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"documentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Documento By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_sisdoc}}/documentos/75",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"documentos",
+								"75"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Documento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id_usuario\": 1,\r\n  \"descricao\": \"Seção Criada Via API\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_sisdoc}}/documentos/create",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"documentos",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Documento",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"Tópico atualizado via API\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_sisdoc}}/documentos/3",
+							"host": [
+								"{{base_url_sisdoc}}"
+							],
+							"path": [
+								"documentos",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teste",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
