@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS sisdoc.documento (
     id_usuario_ultima_atualizacao INTEGER,
     nome VARCHAR(100) NOT NULL,
     descricao VARCHAR(255),
+    conteudo TEXT,
     dt_inicio_vigencia TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     dt_fim_vigencia TIMESTAMP,
     dt_ultima_atualizacao TIMESTAMP,
@@ -111,10 +112,10 @@ INSERT INTO sisdoc.pasta (id_usuario_ultima_atualizacao, nome, descricao) VALUES
 -- ===============================
 -- Inserts iniciais: Documento
 -- ===============================
-INSERT INTO sisdoc.documento (id_pasta, id_usuario_ultima_atualizacao, nome, descricao) VALUES
-(1, 1, 'Documento 1 - BB', 'Documento teste para aplicação SISDOC'),
-(1, 1, 'Documento 2 - BB', 'Documento teste para aplicação SISDOC'),
-(1, 1, 'Documento 3 - BB', 'Documento teste para aplicação SISDOC'),
-(2, 1, 'Documento 1 - CEF', 'Documento teste para aplicação SISDOC'),
-(2, 1, 'Documento 2 - CEF', 'Documento teste para aplicação SISDOC'),
-(2, 1, 'Documento 3 - CEF', 'Documento teste para aplicação SISDOC');
+INSERT INTO sisdoc.documento (id_pasta, id_usuario_ultima_atualizacao, nome, descricao, conteudo) VALUES
+(1, 1, 'Documento 1 - BB', 'Documento teste para aplicação SISDOC','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+(1, 1, 'Documento 2 - BB', 'Documento teste para aplicação SISDOC', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+(1, 1, 'Documento 3 - BB', 'Documento teste para aplicação SISDOC', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+(2, 1, 'Documento 1 - CEF', 'Documento teste para aplicação SISDOC', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+(2, 1, 'Documento 2 - CEF', 'Documento teste para aplicação SISDOC', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+(2, 1, 'Documento 3 - CEF', 'Documento teste para aplicação SISDOC', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.');
